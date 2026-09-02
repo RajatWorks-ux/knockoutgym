@@ -22,10 +22,14 @@ export function ContentProvider({ children }) {
       } catch (err) {
         console.error('Content load error:', err)
         setLocalContent(defaultContent)
-      } finally {
-        // Signal the KO Loader that content is ready — it will now finish
-        markContentReady()
       }
+      // Wait TWO animation frames after setLocalContent so React has
+      // actually painted the page before we signal the loader to slide away
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          markContentReady()
+        })
+      })
     }
     load()
   }, [])
@@ -43,8 +47,6 @@ export function ContentProvider({ children }) {
     await setContent(defaultContent)
   }
 
-  // No loading screen here — the KO Loader in Loader.jsx handles it
-  // Render children even if content is null; pages guard with `if (!content) return null`
   return (
     <ContentContext.Provider value={{ content, updateSection, resetToDefaults }}>
       {children}
