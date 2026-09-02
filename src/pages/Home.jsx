@@ -10,42 +10,35 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
   const { content } = useContent()
-  // Don't return null — show black bg (loader covers it anyway)
-  // Returning null causes a blank flash when loader slides away
   if (!content) return <div style={{ minHeight: '100vh', background: '#060606' }} />
   return (
     <div className="home">
-      <HeroSection    hero={content.hero}   gym={content.gym} />
-      <StatsSection   stats={content.stats} />
-      <AboutSection   about={content.about} owner={content.owner} />
-      <ResultsTeaser  results={content.results} />
+      <HeroSection      hero={content.hero}       gym={content.gym} />
+      <StatsSection     stats={content.stats} />
+      <AboutSection     about={content.about}     owner={content.owner} />
+      <ResultsTeaser    results={content.results} />
       <MembershipTeaser membership={content.membership} />
-      <CTASection     gym={content.gym} />
+      <CTASection       gym={content.gym} />
     </div>
   )
 }
 
-/* ── HERO ────────────────────────────────────────────────────────────────── */
 function HeroSection({ hero, gym }) {
-  const h1Ref  = useRef(null)
-  const h2Ref  = useRef(null)
-  const subRef = useRef(null)
-  const ctaRef = useRef(null)
-  const tagsRef= useRef(null)
+  const h1Ref   = useRef(null)
+  const h2Ref   = useRef(null)
+  const subRef  = useRef(null)
+  const ctaRef  = useRef(null)
+  const tagsRef = useRef(null)
 
   useEffect(() => {
-    // Small delay so Loader has slid away before animation starts
-    const timer = setTimeout(() => {
-      const chars1 = splitText(h1Ref.current)
-      const chars2 = splitText(h2Ref.current)
-      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
-      tl.from(chars1, { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 })
-        .from(chars2,  { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 }, '-=0.7')
-        .from(subRef.current,  { opacity: 0, y: 24, duration: 0.7 }, '-=0.5')
-        .from(ctaRef.current,  { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
-        .from(tagsRef.current?.children ?? [], { opacity: 0, y: 16, stagger: 0.08, duration: 0.5 }, '-=0.3')
-    }, 900) // wait for loader slide-up to finish (0.75s) + small buffer
-    return () => clearTimeout(timer)
+    const chars1 = splitText(h1Ref.current)
+    const chars2 = splitText(h2Ref.current)
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
+    tl.from(chars1, { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 })
+      .from(chars2,  { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 }, '-=0.7')
+      .from(subRef.current,  { opacity: 0, y: 24, duration: 0.7 }, '-=0.5')
+      .from(ctaRef.current,  { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
+      .from(tagsRef.current?.children ?? [], { opacity: 0, y: 16, stagger: 0.08, duration: 0.5 }, '-=0.3')
   }, [])
 
   return (
@@ -58,10 +51,8 @@ function HeroSection({ hero, gym }) {
       }
       <div className="hero-overlay" />
       <div className="scan-line" />
-
       <div className="hero-content container">
         <div className="hero-text">
-          {/* line1 & line2: always show, even if short/long — wraps naturally */}
           <h1 ref={h1Ref} className="hero-h1">{hero?.line1 || 'WHERE CHAMPIONS'}</h1>
           <h1 ref={h2Ref} className="hero-h2">{hero?.line2 || 'ARE FORGED.'}</h1>
           {hero?.subtext && <p ref={subRef} className="hero-sub">{hero.subtext}</p>}
@@ -81,11 +72,9 @@ function HeroSection({ hero, gym }) {
   )
 }
 
-/* ── STATS ────────────────────────────────────────────────────────────────── */
 function StatsSection({ stats }) {
   const sectionRef = useRef(null)
   const numRefs    = useRef([])
-  // Only show stats that have a value — handles if owner removes a stat
   const validStats = (stats || []).filter(s => s.value && s.label)
   if (!validStats.length) return null
 
@@ -125,7 +114,6 @@ function StatsSection({ stats }) {
   )
 }
 
-/* ── ABOUT ────────────────────────────────────────────────────────────────── */
 function AboutSection({ about, owner }) {
   const ref = useRef(null)
   useEffect(() => {
@@ -135,19 +123,14 @@ function AboutSection({ about, owner }) {
   }, [])
 
   const imgSrc = about?.image || owner?.image || ''
-  // Only show if there's something to show
   if (!about?.heading && !about?.body && !imgSrc) return null
 
   return (
     <section ref={ref} className="about-section">
       <div className={`container ${imgSrc ? 'about-grid' : 'about-no-img'}`}>
-        {/* Only renders image column if an image URL exists */}
         {imgSrc && (
           <div className="about-img-wrap">
-            <img
-              src={imgSrc} alt="Knockout Gym" className="about-img"
-              onError={e => { e.target.style.display = 'none' }}
-            />
+            <img src={imgSrc} alt="Knockout Gym" className="about-img" onError={e => { e.target.style.display = 'none' }} />
             <div className="about-img-glow" />
           </div>
         )}
@@ -155,7 +138,6 @@ function AboutSection({ about, owner }) {
           <p className="section-label red">About Us</p>
           {about?.heading    && <h2 className="about-h2">{about.heading}</h2>}
           {about?.subheading && <h3 className="about-h3">{about.subheading}</h3>}
-          {/* Body: no max-width clamp on text — grows with content */}
           {about?.body       && <p className="about-body">{about.body}</p>}
           <Link to="/story" className="btn-red">Read Our Story →</Link>
         </div>
@@ -164,12 +146,9 @@ function AboutSection({ about, owner }) {
   )
 }
 
-/* ── RESULTS TEASER ──────────────────────────────────────────────────────── */
 function ResultsTeaser({ results }) {
-  // Only show cards that have both images — no broken/empty cards ever shown
   const valid = (results || []).filter(r => r.before && r.after).slice(0, 3)
   if (!valid.length) return null
-
   return (
     <section className="results-teaser">
       <div className="container">
@@ -202,17 +181,14 @@ function ResultsTeaser({ results }) {
   )
 }
 
-/* ── MEMBERSHIP TEASER ───────────────────────────────────────────────────── */
 function MembershipTeaser({ membership }) {
   const plans = (membership || []).filter(p => p.name && p.price)
   if (!plans.length) return null
-
   return (
     <section className="mem-teaser">
       <div className="container">
         <p className="section-label red">Membership</p>
         <h2 className="mem-heading">Choose Your Plan.</h2>
-        {/* auto-fit: 1, 2, 3, or 4 plans — all look perfect */}
         <div className="mem-grid">
           {plans.map(plan => (
             <div key={plan.id} className={`mem-card ${plan.badge ? 'mem-card-featured' : ''}`}>
@@ -223,7 +199,6 @@ function MembershipTeaser({ membership }) {
                 <span className="mem-amount">{plan.price}</span>
                 <span className="mem-period">/ {plan.period || 'month'}</span>
               </div>
-              {/* Features: any number — they stack naturally */}
               {(plan.features || []).length > 0 && (
                 <ul className="mem-features">
                   {plan.features.map((f, i) => f && (
@@ -231,9 +206,7 @@ function MembershipTeaser({ membership }) {
                   ))}
                 </ul>
               )}
-              <Link to="/contact" className={plan.badge ? 'btn-red' : 'btn-outline'}>
-                Get Started →
-              </Link>
+              <Link to="/contact" className={plan.badge ? 'btn-red' : 'btn-outline'}>Get Started →</Link>
             </div>
           ))}
         </div>
@@ -242,7 +215,6 @@ function MembershipTeaser({ membership }) {
   )
 }
 
-/* ── CTA BANNER ──────────────────────────────────────────────────────────── */
 function CTASection({ gym }) {
   return (
     <section className="cta-section">
@@ -260,5 +232,4 @@ function CTASection({ gym }) {
     </section>
   )
 }
-
 
