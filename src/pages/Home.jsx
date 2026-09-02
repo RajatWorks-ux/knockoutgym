@@ -31,14 +31,16 @@ function HeroSection({ hero, gym }) {
   const tagsRef = useRef(null)
 
   useEffect(() => {
+    if (!h1Ref.current || !h2Ref.current) return
     const chars1 = splitText(h1Ref.current)
     const chars2 = splitText(h2Ref.current)
+    if (!chars1.length || !chars2.length) return
     const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
     tl.from(chars1, { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 })
       .from(chars2,  { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 }, '-=0.7')
-      .from(subRef.current,  { opacity: 0, y: 24, duration: 0.7 }, '-=0.5')
-      .from(ctaRef.current,  { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
-      .from(tagsRef.current?.children ?? [], { opacity: 0, y: 16, stagger: 0.08, duration: 0.5 }, '-=0.3')
+    if (subRef.current)  tl.from(subRef.current,  { opacity: 0, y: 24, duration: 0.7 }, '-=0.5')
+    if (ctaRef.current)  tl.from(ctaRef.current,  { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
+    if (tagsRef.current?.children?.length) tl.from(tagsRef.current.children, { opacity: 0, y: 16, stagger: 0.08, duration: 0.5 }, '-=0.3')
   }, [])
 
   return (
