@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 
-// Set --vh CSS variable (fixes mobile viewport height issues)
 const setVH = () => {
   document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
 }
