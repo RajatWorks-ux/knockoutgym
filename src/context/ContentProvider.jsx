@@ -1,13 +1,11 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import defaultContent from '../data/defaultContent'
 import { getContent, setContent } from '../lib/db'
-import { useLoading } from './LoadingProvider'
 
 const ContentContext = createContext(null)
 
 export function ContentProvider({ children }) {
   const [content, setLocalContent] = useState(null)
-  const { markContentReady } = useLoading()
 
   useEffect(() => {
     async function load() {
@@ -23,13 +21,6 @@ export function ContentProvider({ children }) {
         console.error('Content load error:', err)
         setLocalContent(defaultContent)
       }
-      // Wait TWO animation frames after setLocalContent so React has
-      // actually painted the page before we signal the loader to slide away
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          markContentReady()
-        })
-      })
     }
     load()
   }, [])
