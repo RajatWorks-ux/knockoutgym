@@ -5,67 +5,87 @@ import './Loader.css'
 
 export default function Loader() {
   const { isLoaded, finishLoading, contentReady } = useLoading()
-  const loaderRef   = useRef(null)
-  const barRef      = useRef(null)
-  const pctRef      = useRef(null)
-  const tlRef       = useRef(null)
-  const readyRef    = useRef(false)  // tracks if contentReady fired before anim ended
-  const animDoneRef = useRef(false)  // tracks if anim finished before contentReady
 
-  const slideOut = () => {
-    gsap.to(loaderRef.current, {
+  const loaderRef       = useRef(null)
+  const barRef          = useRef(null)
+  const pctRef          = useRef(null)
+  const finishCalledRef = useRef(false)
+  const animDoneRef     = useRef(false)
+  const contentReadyRef = useRef(false)
+  const finishLoadingRef = useRef(finishLoading)
+
+  useEffect(() => {
+    finishLoadingRef.current = finishLoading
+  }, [finishLoading])
+
+  function runFinish() {
+    if (finishCalledRef.current) return
+    finishCalledRef.current = true
+
+    const bar    = barRef.current
+    const pct    = pctRef.current
+    const loader = loaderRef.current
+
+    if (!loader) {
+      finishLoadingRef.current()
+      return
+    }
+
+    // Fill to 100%
+    if (bar) gsap.to(bar, { scaleX: 1, duration: 0.35, ease: 'power2.out' })
+    if (pct) gsap.to(pct, {
+      textContent: '100',
+      duration: 0.35,
+      snap: { textContent: 1 },
+      ease: 'power2.out',
+    })
+
+    // Slide up after bar fills
+    gsap.to(loader, {
+      delay: 0.45,
       yPercent: -100,
-      duration: 0.8,
+      duration: 0.75,
       ease: 'power4.inOut',
-      onComplete: finishLoading,
+      onComplete: () => finishLoadingRef.current(),
     })
   }
 
+  // Phase 1: animate to 85%, then check if content is already ready
   useEffect(() => {
-    if (isLoaded) return
+    const bar = barRef.current
+    const pct = pctRef.current
+    if (!bar || !pct) return
 
-    // Animate bar from 0 → 85% quickly, then hold until contentReady
-    tlRef.current = gsap.timeline()
-
-    tlRef.current.to(barRef.current, {
+    const barTween = gsap.to(bar, {
       scaleX: 0.85,
       duration: 1.2,
       ease: 'power2.out',
+      onComplete: () => {
+        animDoneRef.current = true
+        if (contentReadyRef.current) runFinish()
+      },
     })
-    tlRef.current.to(pctRef.current, {
+    const pctTween = gsap.to(pct, {
       textContent: '85',
       duration: 1.2,
       snap: { textContent: 1 },
       ease: 'power2.out',
-    }, '<')
-
-    tlRef.current.eventCallback('onComplete', () => {
-      animDoneRef.current = true
-      // If content was already ready before animation reached 85%, finish now
-      if (readyRef.current) {
-        finishBar()
-      }
     })
+
+    // Cleanup for StrictMode double-invoke — kill tweens if effect re-runs
+    return () => {
+      barTween.kill()
+      pctTween.kill()
+      animDoneRef.current = false
+    }
   }, [])
 
-  // When Supabase fetch completes, fill bar to 100% and slide out
+  // Phase 2: content ready from Supabase
   useEffect(() => {
     if (!contentReady) return
-    readyRef.current = true
-
-    if (animDoneRef.current) {
-      // Animation already at 85%, content just arrived — finish immediately
-      finishBar()
-    }
-    // else: animComplete callback will call finishBar() when it catches up
+    contentReadyRef.current = true
+    if (animDoneRef.current) runFinish()
   }, [contentReady])
-
-  function finishBar() {
-    gsap.timeline()
-      .to(barRef.current, { scaleX: 1, duration: 0.4, ease: 'power2.out' })
-      .to(pctRef.current, { textContent: '100', duration: 0.4, snap: { textContent: 1 }, ease: 'power2.out' }, '<')
-      .call(slideOut)
-  }
 
   if (isLoaded) return null
 
