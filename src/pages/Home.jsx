@@ -10,7 +10,9 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
   const { content } = useContent()
-  if (!content) return null
+  // Don't return null — show black bg (loader covers it anyway)
+  // Returning null causes a blank flash when loader slides away
+  if (!content) return <div style={{ minHeight: '100vh', background: '#060606' }} />
   return (
     <div className="home">
       <HeroSection    hero={content.hero}   gym={content.gym} />
@@ -258,4 +260,5 @@ function CTASection({ gym }) {
     </section>
   )
 }
+
 
