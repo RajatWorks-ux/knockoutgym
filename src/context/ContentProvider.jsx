@@ -69,5 +69,3 @@ function deepMerge(defaults, saved) {
   }
   return result
 }
-
-
