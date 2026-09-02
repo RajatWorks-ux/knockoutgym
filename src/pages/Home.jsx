@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useContent } from '../context/ContentProvider'
-import { useLoading } from '../context/LoadingProvider'
 import { splitText } from '../utils/splitText'
 import './Home.css'
 
@@ -11,11 +10,10 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
   const { content } = useContent()
-  const { isLoaded } = useLoading()
   if (!content) return null
   return (
     <div className="home">
-      <HeroSection    hero={content.hero}   gym={content.gym}  isLoaded={isLoaded} />
+      <HeroSection    hero={content.hero}   gym={content.gym} />
       <StatsSection   stats={content.stats} />
       <AboutSection   about={content.about} owner={content.owner} />
       <ResultsTeaser  results={content.results} />
@@ -26,7 +24,7 @@ export default function Home() {
 }
 
 /* ── HERO ────────────────────────────────────────────────────────────────── */
-function HeroSection({ hero, gym, isLoaded }) {
+function HeroSection({ hero, gym }) {
   const h1Ref  = useRef(null)
   const h2Ref  = useRef(null)
   const subRef = useRef(null)
@@ -34,16 +32,19 @@ function HeroSection({ hero, gym, isLoaded }) {
   const tagsRef= useRef(null)
 
   useEffect(() => {
-    if (!isLoaded) return
-    const chars1 = splitText(h1Ref.current)
-    const chars2 = splitText(h2Ref.current)
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
-    tl.from(chars1, { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 })
-      .from(chars2,  { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 }, '-=0.7')
-      .from(subRef.current,  { opacity: 0, y: 24, duration: 0.7 }, '-=0.5')
-      .from(ctaRef.current,  { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
-      .from(tagsRef.current?.children ?? [], { opacity: 0, y: 16, stagger: 0.08, duration: 0.5 }, '-=0.3')
-  }, [isLoaded])
+    // Small delay so Loader has slid away before animation starts
+    const timer = setTimeout(() => {
+      const chars1 = splitText(h1Ref.current)
+      const chars2 = splitText(h2Ref.current)
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
+      tl.from(chars1, { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 })
+        .from(chars2,  { y: 140, opacity: 0, duration: 1.0, stagger: 0.025 }, '-=0.7')
+        .from(subRef.current,  { opacity: 0, y: 24, duration: 0.7 }, '-=0.5')
+        .from(ctaRef.current,  { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
+        .from(tagsRef.current?.children ?? [], { opacity: 0, y: 16, stagger: 0.08, duration: 0.5 }, '-=0.3')
+    }, 900) // wait for loader slide-up to finish (0.75s) + small buffer
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <section className="hero">
@@ -257,3 +258,4 @@ function CTASection({ gym }) {
     </section>
   )
 }
+
