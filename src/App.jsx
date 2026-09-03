@@ -1,6 +1,8 @@
 import { Component } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { LoadingProvider } from './context/LoadingProvider'
 import { ContentProvider } from './context/ContentProvider'
+import Loader      from './components/Loader/Loader'
 import Navbar      from './components/Navbar/Navbar'
 import Cursor      from './components/Cursor/Cursor'
 import Footer      from './components/Footer/Footer'
@@ -51,8 +53,10 @@ function PublicLayout({ children }) {
 export default function App() {
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        <ContentProvider>
+      <LoadingProvider>
+        <Loader />
+        <BrowserRouter>
+          <ContentProvider>
           <Cursor />
           <Routes>
             <Route path="/"            element={<PublicLayout><Home /></PublicLayout>} />
@@ -63,8 +67,10 @@ export default function App() {
             <Route path="/kgadmin-9x2" element={<OwnerPanel />} />
             <Route path="*"            element={<PublicLayout><Home /></PublicLayout>} />
           </Routes>
-        </ContentProvider>
-      </BrowserRouter>
+          </ContentProvider>
+        </BrowserRouter>
+      </LoadingProvider>
     </ErrorBoundary>
   )
 }
+
