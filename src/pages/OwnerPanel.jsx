@@ -1073,11 +1073,11 @@ function ImageField({ label, description, instructions, value, onChange, isVideo
 
     const fd = new FormData()
     fd.append('file', file)
-    fd.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET)
+    fd.append('upload_preset', 'r83wdhni')
 
     try {
       const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/qwl6xyij/image/upload`,
         { method: 'POST', body: fd }
       )
       const data = await res.json()
