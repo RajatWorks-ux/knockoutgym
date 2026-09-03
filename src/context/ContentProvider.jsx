@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react'
 import defaultContent from '../data/defaultContent'
 import { getContent, setContent } from '../lib/db'
+import { useLoading } from './LoadingProvider'
 
 const ContentContext = createContext(null)
 
@@ -9,25 +10,33 @@ export function ContentProvider({ children }) {
   // Keep a ref that always holds the latest content so updateSection
   // never closes over a stale (or null) snapshot.
   const contentRef = useRef(null)
+  const { markContentReady } = useLoading()
 
   useEffect(() => {
     async function load() {
+      let resolved = defaultContent
       try {
         const saved = await getContent()
         if (saved) {
-          const merged = deepMerge(defaultContent, saved)
-          contentRef.current = merged
-          setLocalContent(merged)
+          resolved = deepMerge(defaultContent, saved)
         } else {
           await setContent(defaultContent)
-          contentRef.current = defaultContent
-          setLocalContent(defaultContent)
         }
+        contentRef.current = resolved
+        setLocalContent(resolved)
       } catch (err) {
         console.error('Content load error:', err)
         contentRef.current = defaultContent
         setLocalContent(defaultContent)
       }
+      // Preload all images so the loader exits only when photos are ready
+      const urls = extractImageUrls(resolved)
+      await Promise.allSettled(urls.map(url => new Promise(res => {
+        const img = new Image()
+        img.onload = img.onerror = res
+        img.src = url
+      })))
+      markContentReady()
     }
     load()
   }, [])
@@ -92,6 +101,21 @@ export function useContent() {
   return ctx
 }
 
+// Walk the content object and collect every http(s) image URL
+function extractImageUrls(obj, urls = []) {
+  if (!obj || typeof obj !== 'object') return urls
+  for (const val of Object.values(obj)) {
+    if (typeof val === 'string' && val.startsWith('http')) {
+      urls.push(val)
+    } else if (Array.isArray(val)) {
+      val.forEach(item => extractImageUrls(item, urls))
+    } else if (val && typeof val === 'object') {
+      extractImageUrls(val, urls)
+    }
+  }
+  return urls
+}
+
 function deepMerge(defaults, saved) {
   const result = { ...defaults }
   for (const key of Object.keys(saved)) {
@@ -103,4 +127,5 @@ function deepMerge(defaults, saved) {
   }
   return result
 }
+
 
