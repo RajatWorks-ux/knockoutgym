@@ -62,6 +62,16 @@ function BACard({ data }) {
 
   return (
     <div className="ba-card">
+      {/* Info bar on top: huge name left, massive result right */}
+      <div className="ba-info">
+        <div className="ba-info-left">
+          {data.name     && <span className="ba-name">{data.name}</span>}
+          {data.duration && <span className="ba-duration">{data.duration}</span>}
+        </div>
+        {data.result && <span className="ba-result">{data.result}</span>}
+      </div>
+
+      {/* Full-width slider below */}
       <div ref={cardRef} className="ba-slider"
         onPointerDown={e => { e.currentTarget.setPointerCapture(e.pointerId); setDrag(true) }}
         onPointerMove={e => { if (drag) calcPct(e.clientX) }}
@@ -77,18 +87,13 @@ function BACard({ data }) {
         <div className="ba-handle" style={{ left: `${pct}%` }}>
           <div className="ba-handle-line" />
           <div className="ba-handle-circle">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
               <path d="M5 8l-4 0M5 8l-3-3M5 8l-3 3M11 8l4 0M11 8l3-3M11 8l3 3" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
           </div>
         </div>
       </div>
-      {/* Info only shows fields that exist */}
-      <div className="ba-info">
-        {data.name     && <span className="ba-name">{data.name}</span>}
-        {data.result   && <span className="ba-result">{data.result}</span>}
-        {data.duration && <span className="ba-duration">{data.duration}</span>}
-      </div>
     </div>
   )
-}
+            }
+
