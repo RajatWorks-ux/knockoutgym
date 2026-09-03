@@ -43,7 +43,7 @@
 .tl-year    { font-family: var(--font-display); font-size: 52px; color: var(--red); line-height: 1; }
 .tl-heading { font-family: var(--font-body); font-size: 18px; font-weight: 500; color: var(--text); margin: 8px 0 12px; }
 .tl-text    { font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.75; }
-.tl-img     { width: 100%; height: 220px; object-fit: cover; border-radius: 2px; }
+.tl-img     { width: 100%; height: auto; display: block; border-radius: 2px; }
 
 /* ── Owner ── */
 .owner-section { padding: 120px 0; background: var(--surface); }
@@ -56,8 +56,8 @@
 .owner-img-wrap { position: relative; }
 .owner-img {
   width: 100%;
-  height: 580px;
-  object-fit: cover;
+  height: auto;
+  display: block;
   border-radius: 2px;
 }
 .owner-img-glow {
@@ -101,7 +101,7 @@
   transition: border-color 0.3s;
 }
 .trophy-card:hover { border-color: var(--gold); }
-.trophy-img  { width: 100%; height: 200px; object-fit: cover; filter: sepia(0.3); transition: filter 0.3s; }
+.trophy-img  { width: 100%; height: auto; display: block; filter: sepia(0.3); transition: filter 0.3s; }
 .trophy-card:hover .trophy-img { filter: sepia(0) saturate(1.2); }
 .trophy-info { padding: 20px; }
 .trophy-level { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 500; }
@@ -121,7 +121,7 @@
   .tl-right .tl-img-wrap { grid-column: 1; grid-row: auto; }
   .tl-dot { display: none; }
   .owner-grid { grid-template-columns: 1fr; }
-  .owner-img { height: 360px; }
+  .owner-img { height: auto; }
 }
 
 /* Dynamic content additions */
@@ -129,3 +129,4 @@
 .about-no-img { display: block; }
 .owner-bio, .sh-intro, .tl-text { overflow-wrap: break-word; word-break: break-word; }
 .ach-title { overflow-wrap: break-word; flex: 1; }
+
