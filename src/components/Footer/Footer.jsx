@@ -57,11 +57,10 @@ export default function Footer() {
           <span className="section-label">
             © {new Date().getFullYear()} {g.name || 'Knockout Gym'} — Zirakpur, Punjab
           </span>
-          <span className="section-label">
-            Built by Rajat Kumar Dua
-          </span>
+
         </div>
       </div>
     </footer>
   )
 }
+
