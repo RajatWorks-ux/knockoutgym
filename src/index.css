@@ -1,168 +1,190 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geist:wght@100..900&display=swap');
+/* ═══════════════════════════════════════════════════════════════════
+   KNOCKOUT GYM — GLOBAL DESIGN SYSTEM v2
+   Premium dark fitness aesthetic
+   ═══════════════════════════════════════════════════════════════════ */
 
-/* ── Reset ─────────────────────────────────────────────────────────────────── */
+/* ── DESIGN TOKENS ──────────────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg:           #030303;
+  --bg-2:         #070707;
+  --bg-card:      #0d0d0d;
+  --bg-card-h:    #131313;
+
+  /* Borders */
+  --border:       rgba(255,255,255,0.06);
+  --border-b:     rgba(255,255,255,0.13);
+
+  /* Text */
+  --text:         #f0f0f0;
+  --text-2:       #888;
+  --text-3:       #3a3a3a;
+
+  /* Brand color — overridden by JS when owner sets custom color */
+  --red:          #c8102e;
+  --red-b:        #e01030;
+  --red-dim:      rgba(200,16,46,0.09);
+  --red-glow:     rgba(200,16,46,0.22);
+  --red-glow-b:   rgba(200,16,46,0.45);
+
+  /* Typography */
+  --font-display: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Layout */
+  --section:      clamp(72px, 10vw, 130px);
+  --r:            6px;
+  --r-lg:         12px;
+
+  /* Motion */
+  --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+
+  /* Viewport height (set by main.jsx, fixes iOS) */
+  --vh: 1vh;
+}
+
+/* ── RESET ──────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: auto; }
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.65;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-a { color: inherit; text-decoration: none; }
-img, video { display: block; max-width: 100%; }
-button { font-family: var(--font-body); cursor: pointer; border: none; background: none; }
-input, textarea, select { font-family: var(--font-body); }
-ul, ol { list-style: none; }
-
-/* ── CSS Variables ──────────────────────────────────────────────────────────── */
-:root {
-  --bg:           #060606;
-  --surface:      #111111;
-  --surface-2:    #181818;
-  --border:       rgba(255,255,255,0.07);
-  --border-hover: rgba(255,255,255,0.14);
-
-  --red:          #c8102e;
-  --red-dim:      rgba(200,16,46,0.14);
-  --red-glow:     rgba(200,16,46,0.32);
-
-  --gold:         #c9a84c;
-  --gold-dim:     rgba(201,168,76,0.14);
-
-  --text:         #f0ece4;
-  --text-muted:   rgba(240,236,228,0.44);
-  --text-faint:   rgba(240,236,228,0.18);
-
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-body:    'Geist', sans-serif;
-
-  --vh:           100vh;
-  --nav-h:        72px;
-
-  --ease-out:     cubic-bezier(0.16,1,0.3,1);
+  overflow-x: hidden;
 }
 
-/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #404040; }
 
-/* ── Selection ───────────────────────────────────────────────────────────────── */
-::selection { background: var(--red); color: #fff; }
+img { max-width: 100%; display: block; }
+a   { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+input, textarea, select { font-family: inherit; }
 
-/* ── Typography helpers ──────────────────────────────────────────────────────── */
-h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; line-height: 1; }
+/* ── LAYOUT ─────────────────────────────────────────────────────── */
+.container {
+  width: min(1240px, 100% - 40px);
+  margin-inline: auto;
+}
 
+.page {
+  padding-top: 72px;
+  min-height: 100vh;
+}
+
+/* ── TYPE SCALE ─────────────────────────────────────────────────── */
 .section-label {
-  font-size: 11px;
-  font-weight: 200;
-  letter-spacing: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-2);
+  display: inline-block;
 }
-
 .section-label.red { color: var(--red); }
 
-/* ── Container ───────────────────────────────────────────────────────────────── */
-.container {
-  width: calc(100% - 48px);
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-  .container { width: calc(100% - 32px); }
-}
-
-/* ── Buttons ─────────────────────────────────────────────────────────────────── */
+/* ── BUTTONS ────────────────────────────────────────────────────── */
 .btn-red {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 32px;
+  gap: 6px;
+  padding: 13px 26px;
   background: var(--red);
   color: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 2px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  border-radius: 2px;
-  transition: opacity 0.2s;
+  border-radius: var(--r);
+  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
 }
-.btn-red:hover { opacity: 0.85; }
+.btn-red::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 55%);
+  pointer-events: none;
+}
+.btn-red:hover {
+  background: var(--red-b);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--red-glow);
+}
+.btn-red:active { transform: translateY(0); }
 
 .btn-outline {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 13px 31px;
+  gap: 6px;
+  padding: 12px 26px;
   background: transparent;
   color: var(--text);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 2px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  border-radius: 2px;
-  border: 1px solid var(--border-hover);
-  transition: border-color 0.2s, color 0.2s;
+  border: 1px solid var(--border-b);
+  border-radius: var(--r);
+  transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
+  white-space: nowrap;
 }
-.btn-outline:hover { border-color: var(--red); color: var(--red); }
-
-/* ── Tag / Badge ────────────────────────────────────────────────────────────── */
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+.btn-outline:hover {
+  border-color: rgba(255,255,255,0.35);
+  color: #fff;
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-2px);
 }
+.btn-outline:active { transform: translateY(0); }
 
-/* ── Divider ────────────────────────────────────────────────────────────────── */
+/* ── DIVIDER ────────────────────────────────────────────────────── */
 .divider {
-  width: 100%;
   height: 1px;
   background: var(--border);
 }
 
-/* ── Red ambient glow (reusable) ────────────────────────────────────────────── */
-.red-glow {
+/* ── UTILITY ────────────────────────────────────────────────────── */
+.sr-only {
   position: absolute;
-  border-radius: 50%;
-  background: var(--red-glow);
-  filter: blur(120px);
-  pointer-events: none;
-  z-index: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
-/* ── Page wrapper ───────────────────────────────────────────────────────────── */
-.page { min-height: 100vh; padding-top: var(--nav-h); }
-
-/* ── Scroll progress bar (mobile) ───────────────────────────────────────────── */
-#scroll-bar {
-  position: fixed;
-  top: 0; left: 0;
-  height: 2px;
-  width: 0%;
-  background: var(--red);
-  z-index: 9999;
-  pointer-events: none;
-  transition: width 0.05s linear;
-  display: none;
+/* ── REDUCED MOTION ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
-@media (max-width: 1024px) { #scroll-bar { display: block; } }
 
-/* ── Cursor override (hide default on desktop) ──────────────────────────────── */
-@media (pointer: fine) and (min-width: 1025px) { * { cursor: none !important; } }
+/* ── SAFE AREA (iPhone notch/home bar) ──────────────────────────── */
+:root {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
