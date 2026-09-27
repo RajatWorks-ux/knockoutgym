@@ -219,6 +219,14 @@ const defaultContent = {
     },
   ],
 
+
+  // ── BRANDING & STYLE ──────────────────────────────────────────────────────
+  //  Change these to rebrand this site for ANY gym
+  branding: {
+    logoPrefix:   'KO',         // 2-4 letters shown in navbar & footer logo
+    primaryColor: '#c8102e',    // Brand color — buttons, accents, highlights
+  },
+
   // ── ABOUT SECTION SNAPSHOT (on Home page) ─────────────────────────────────
   about: {
     heading:  'More Than a Gym.',
@@ -230,3 +238,4 @@ const defaultContent = {
 }
 
 export default defaultContent
+
