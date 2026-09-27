@@ -1,12 +1,13 @@
 .loader {
   position: fixed;
   inset: 0;
+  z-index: 9999;
   background: var(--bg);
-  z-index: 99998;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0;
 }
 
 .loader-logo {
@@ -14,32 +15,30 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  margin-bottom: 60px;
 }
 
 .loader-ko {
   font-family: var(--font-display);
-  font-size: clamp(80px, 15vw, 160px);
+  font-size: clamp(80px, 16vw, 120px);
   color: var(--text);
   line-height: 1;
-  letter-spacing: 6px;
+  letter-spacing: 0.06em;
 }
 
 .loader-name {
-  font-size: 11px;
-  font-weight: 200;
-  letter-spacing: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: var(--text-2);
   text-transform: uppercase;
-  color: var(--text-muted);
 }
 
 .loader-bottom {
-  position: absolute;
-  bottom: 48px;
-  left: 48px;
-  right: 48px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
+  width: 220px;
 }
 
 .loader-bar-track {
@@ -48,29 +47,19 @@
   background: var(--border);
   overflow: hidden;
 }
-
 .loader-bar {
   height: 100%;
   background: var(--red);
-  transform-origin: left;
   transform: scaleX(0);
-  box-shadow: 0 0 12px var(--red);
+  transform-origin: left;
 }
 
 .loader-pct {
   font-family: var(--font-display);
-  font-size: 20px;
-  color: var(--text-muted);
-  min-width: 44px;
+  font-size: 18px;
+  color: var(--text-2);
+  min-width: 42px;
   text-align: right;
+  letter-spacing: 0.04em;
 }
 
-.loader-pct::after {
-  content: '%';
-  font-size: 12px;
-  margin-left: 2px;
-}
-
-@media (max-width: 768px) {
-  .loader-bottom { left: 24px; right: 24px; bottom: 40px; }
-}
