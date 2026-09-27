@@ -9,26 +9,22 @@ import './Navbar.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Lenis instance shared globally
 let lenisInstance = null
-
 export function getLenis() { return lenisInstance }
 
 const NAV_LINKS = [
-  { label: 'Story',      to: '/story'   },
-  { label: 'Results',   to: '/results' },
-  { label: 'Gallery',   to: '/gallery' },
-  { label: 'Contact',   to: '/contact' },
+  { label: 'Story',   to: '/story'   },
+  { label: 'Results', to: '/results' },
+  { label: 'Gallery', to: '/gallery' },
+  { label: 'Contact', to: '/contact' },
 ]
 
 export default function Navbar() {
-  const navRef    = useRef(null)
-  const barRef    = useRef(null)
+  const navRef  = useRef(null)
   const [open, setOpen] = useState(false)
   const { content } = useContent()
   const location = useLocation()
 
-  // Close mobile menu on route change
   useEffect(() => { setOpen(false) }, [location])
 
   // Lenis smooth scroll (desktop only)
@@ -38,7 +34,6 @@ export default function Navbar() {
       window.innerWidth > 1024
 
     if (!isDesktop) {
-      // Mobile: scroll progress bar
       const bar = document.getElementById('scroll-bar')
       const onScroll = () => {
         if (!bar) return
@@ -49,54 +44,48 @@ export default function Navbar() {
       return () => window.removeEventListener('scroll', onScroll)
     }
 
-    lenisInstance = new Lenis({
-      duration: 1.7,
-      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    })
-
+    lenisInstance = new Lenis({ duration: 1.7, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
     lenisInstance.on('scroll', ScrollTrigger.update)
-
     gsap.ticker.add(time => lenisInstance.raf(time * 1000))
     gsap.ticker.lagSmoothing(0)
-
-    return () => {
-      lenisInstance?.destroy()
-      lenisInstance = null
-    }
+    return () => { lenisInstance?.destroy(); lenisInstance = null }
   }, [])
 
-  // Navbar background on scroll
+  // Navbar glass background on scroll
   useEffect(() => {
     const nav = navRef.current
     if (!nav) return
     const onScroll = () => {
-      if (window.scrollY > 40) nav.classList.add('nav-scrolled')
-      else nav.classList.remove('nav-scrolled')
+      nav.classList.toggle('nav-scrolled', window.scrollY > 40)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const gymName = content?.gym?.name || 'Knockout Gym'
+  // Dynamic logo prefix from branding (owner can change it)
+  const logoPrefix = content?.branding?.logoPrefix || 'KO'
+  const gymName    = content?.gym?.name || 'Knockout Gym'
 
   return (
     <>
-      {/* Scroll progress bar for mobile */}
       <div id="scroll-bar" />
 
       <nav ref={navRef} className="navbar">
         <div className="nav-inner container">
           <Link to="/" className="nav-logo">
-            <span className="nav-logo-ko">KO</span>
-            <span className="nav-logo-dot">·</span>
+            <span className="nav-logo-ko">{logoPrefix}</span>
+            <span className="nav-logo-sep">·</span>
             <span className="nav-logo-name">{gymName}</span>
           </Link>
 
-          {/* Desktop links */}
+          {/* Desktop */}
           <ul className="nav-links">
             {NAV_LINKS.map(link => (
               <li key={link.to}>
-                <Link to={link.to} className={`nav-link ${location.pathname === link.to ? 'active' : ''}`}>
+                <Link
+                  to={link.to}
+                  className={`nav-link ${location.pathname === link.to ? 'active' : ''}`}
+                >
                   <HoverLinks>{link.label}</HoverLinks>
                 </Link>
               </li>
@@ -106,7 +95,7 @@ export default function Navbar() {
             </li>
           </ul>
 
-          {/* Mobile hamburger */}
+          {/* Mobile burger */}
           <button
             className={`nav-burger ${open ? 'is-open' : ''}`}
             onClick={() => setOpen(v => !v)}
@@ -117,22 +106,25 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile overlay menu */}
+      {/* Mobile menu overlay */}
       <div className={`mobile-menu ${open ? 'is-open' : ''}`}>
-        <ul className="mobile-links">
-          {NAV_LINKS.map(link => (
-            <li key={link.to}>
-              <Link to={link.to} className="mobile-link">{link.label}</Link>
+        <div className="mobile-menu-inner">
+          <ul className="mobile-links">
+            {NAV_LINKS.map(link => (
+              <li key={link.to}>
+                <Link to={link.to} className="mobile-link">{link.label}</Link>
+              </li>
+            ))}
+            <li>
+              <Link to="/contact" className="btn-red mobile-cta">Join Now</Link>
             </li>
-          ))}
-          <li>
-            <Link to="/contact" className="btn-red mobile-cta">Join Now</Link>
-          </li>
-        </ul>
-        <div className="mobile-menu-footer">
-          <span className="section-label">{content?.gym?.phone || '085828 59970'}</span>
+          </ul>
+          <div className="mobile-menu-foot">
+            <span className="section-label">{content?.gym?.phone || ''}</span>
+          </div>
         </div>
       </div>
     </>
   )
 }
+
