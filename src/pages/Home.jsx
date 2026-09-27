@@ -1,11 +1,10 @@
-import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useContent } from '../context/ContentProvider'
 import './Home.css'
 
 export default function Home() {
   const { content } = useContent()
-  if (!content) return <div style={{ minHeight: '100vh', background: '#060606' }} />
+  if (!content) return <div style={{ minHeight: '100vh', background: '#030303' }} />
   return (
     <div className="home">
       <HeroSection      hero={content.hero}       gym={content.gym} />
@@ -20,6 +19,8 @@ export default function Home() {
 
 /* ── HERO ── */
 function HeroSection({ hero, gym }) {
+  const hasMedia = hero?.videoUrl || hero?.bgImage
+
   return (
     <section className="hero">
       {hero?.videoUrl
@@ -29,9 +30,16 @@ function HeroSection({ hero, gym }) {
           : <div className="hero-animated-bg" />
       }
       <div className="hero-overlay" />
-      <div className="scan-line" />
-      <div className="hero-content container">
+      {hasMedia && <div className="scan-line" />}
+
+      <div className="hero-content">
         <div className="hero-text">
+          {gym?.name && (
+            <div className="hero-eyebrow">
+              <span className="hero-eyebrow-dot" />
+              <span className="hero-eyebrow-text">{gym.name}</span>
+            </div>
+          )}
           <h1 className="hero-h1">{hero?.line1 || 'WHERE CHAMPIONS'}</h1>
           <h1 className="hero-h2">{hero?.line2 || 'ARE FORGED.'}</h1>
           {hero?.subtext && <p className="hero-sub">{hero.subtext}</p>}
@@ -40,12 +48,14 @@ function HeroSection({ hero, gym }) {
             <Link to="/story"   className="btn-outline">Our Story</Link>
           </div>
         </div>
+
         <div className="hero-tags">
-          {gym?.rating && <span className="tag">⭐ {gym.rating} ({gym.reviews || '0'} Reviews)</span>}
-          <span className="tag">📍 Zirakpur, Punjab</span>
+          {gym?.rating  && <span className="tag">⭐ {gym.rating} ({gym.reviews || '0'} Reviews)</span>}
+          {gym?.address && <span className="tag">📍 Zirakpur, Punjab</span>}
           {gym?.hours?.weekdays && <span className="tag">🕐 {gym.hours.weekdays}</span>}
         </div>
       </div>
+
       <div className="hero-scroll">
         <span className="section-label">scroll</span>
         <div className="hero-scroll-line" />
@@ -56,22 +66,19 @@ function HeroSection({ hero, gym }) {
 
 /* ── STATS ── */
 function StatsSection({ stats }) {
-  const validStats = (stats || []).filter(s => s.value && s.label)
-  if (!validStats.length) return null
+  const valid = (stats || []).filter(s => s.value && s.label)
+  if (!valid.length) return null
   return (
     <section className="stats-section">
-      <div className="container">
-        <div className="stats-grid">
-          {validStats.map((stat, i) => (
-            <div key={i} className="stat-item">
-              <div className="stat-num">
-                <span>{stat.value}{stat.suffix}</span>
-              </div>
-              <div className="stat-label section-label">{stat.label}</div>
-              {i < validStats.length - 1 && <div className="stat-divider" />}
+      <div className="stats-grid">
+        {valid.map((stat, i) => (
+          <div key={i} className="stat-item">
+            <div className="stat-num">
+              {stat.value}{stat.suffix && <sup>{stat.suffix}</sup>}
             </div>
-          ))}
-        </div>
+            <div className="stat-label section-label">{stat.label}</div>
+          </div>
+        ))}
       </div>
     </section>
   )
@@ -95,8 +102,8 @@ function AboutSection({ about, owner }) {
           <p className="section-label red">About Us</p>
           {about?.heading    && <h2 className="about-h2">{about.heading}</h2>}
           {about?.subheading && <h3 className="about-h3">{about.subheading}</h3>}
-          {about?.body       && <p className="about-body">{about.body}</p>}
-          <Link to="/story" className="btn-red">Read Our Story →</Link>
+          {about?.body       && <p  className="about-body">{about.body}</p>}
+          <div><Link to="/story" className="btn-red">Read Our Story →</Link></div>
         </div>
       </div>
     </section>
@@ -121,15 +128,19 @@ function ResultsTeaser({ results }) {
           {valid.map(r => (
             <div key={r.id} className="rt-card">
               <div className="rt-images">
-                <img src={r.before} alt="Before" className="rt-before" onError={e => e.target.style.display='none'} />
-                <img src={r.after}  alt="After"  className="rt-after"  onError={e => e.target.style.display='none'} />
+                <img src={r.after}  alt="After"  className="rt-after"
+                  onError={e => e.target.style.display = 'none'} />
+                <img src={r.before} alt="Before" className="rt-before"
+                  onError={e => e.target.style.display = 'none'} />
                 <span className="rt-label-before">BEFORE</span>
                 <span className="rt-label-after">AFTER</span>
               </div>
               <div className="rt-info">
-                {r.name     && <span className="rt-name">{r.name}</span>}
-                {r.result   && <span className="rt-result">{r.result}</span>}
-                {r.duration && <span className="rt-duration">{r.duration}</span>}
+                <div>
+                  {r.name     && <span className="rt-name">{r.name}</span>}
+                  {r.duration && <div><span className="rt-duration">{r.duration}</span></div>}
+                </div>
+                {r.result && <span className="rt-result">{r.result}</span>}
               </div>
             </div>
           ))}
@@ -184,13 +195,18 @@ function CTASection({ gym }) {
       <div className="container cta-inner">
         <h2 className="cta-heading">Ready to Start?</h2>
         {gym?.hours?.weekdays && (
-          <p className="cta-sub">{gym.hours.weekdays} · Mon – Sat · {gym?.hours?.sunday || 'Closed Sunday'}</p>
+          <p className="cta-sub">{gym.hours.weekdays} · Mon–Sat · {gym?.hours?.sunday || 'Closed Sunday'}</p>
         )}
         <div className="cta-btns">
           {gym?.phone    && <a href={`tel:${gym.phone}`} className="btn-red">Call — {gym.phone}</a>}
-          {gym?.whatsapp && <a href={`https://wa.me/${gym.whatsapp}`} target="_blank" rel="noopener noreferrer" className="btn-outline">WhatsApp</a>}
+          {gym?.whatsapp && (
+            <a href={`https://wa.me/${gym.whatsapp}`} target="_blank" rel="noopener noreferrer" className="btn-outline">
+              WhatsApp
+            </a>
+          )}
         </div>
       </div>
     </section>
   )
 }
+
