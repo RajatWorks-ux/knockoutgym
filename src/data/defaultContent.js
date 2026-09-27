@@ -10,18 +10,18 @@ const defaultContent = {
 
   // ── GYM INFO ──────────────────────────────────────────────────────────────
   gym: {
-    name:        'Knockout Gym',
+    name:        'Fitness Gym',
     tagline:     'Where Champions Are Forged.',
-    address:     'SCO 128, 1st Floor, Main Patiala Road, Near Canara Bank, Zirakpur, Punjab 140603',
-    phone:       '085828 59970',
-    email:       'knockoutgym@gmail.com',
+    address:     '---------',
+    phone:       '------',
+    email:       '----------',
     rating:      '4.9',
     reviews:     '364',
     totalMembers:'500',
     years:       '6',
     instagram:   '',
     facebook:    '',
-    whatsapp:    '918582859970',
+    whatsapp:    '-------',
     // Paste a Google Maps embed URL here (from maps.google.com → Share → Embed)
     mapEmbed:    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3431.4!2d76.85!3d30.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDM4JzI0LjAiTiA3NsKwNTEnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890',
     hours: {
@@ -56,7 +56,7 @@ const defaultContent = {
   owner: {
     name:   'Gurpreet Singh',
     title:  'Head Coach & Founder',
-    bio:    'Gurpreet Singh started Knockout Gym in 2019 with a single vision — to build a space where every person, regardless of fitness level, could unlock their true potential. A competitive athlete with over a decade of training experience, Gurpreet has represented Punjab at national-level competitions and brought home titles that reflect years of discipline and hard work. His coaching philosophy is simple: consistency over intensity, form over ego, and character over trophies.',
+    bio:    'Gurpreet Singh started Fitness Gym in 2019 with a single vision — to build a space where every person, regardless of fitness level, could unlock their true potential. A competitive athlete with over a decade of training experience, Gurpreet has represented Punjab at national-level competitions and brought home titles that reflect years of discipline and hard work. His coaching philosophy is simple: consistency over intensity, form over ego, and character over trophies.',
     image:  'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
     achievements: [
       { title: 'Punjab State Bodybuilding Championship', year: '2023' },
@@ -68,19 +68,19 @@ const defaultContent = {
 
   // ── GYM STORY TIMELINE ────────────────────────────────────────────────────
   story: {
-    heading: 'The Knockout Story',
+    heading: 'The Fitness Story',
     intro:   'Every great gym has a founding moment. Ours started with a small space, a big vision, and the belief that Zirakpur deserved a world-class fitness destination.',
     timeline: [
       {
         year: '2019',
         heading: 'The First Step',
-        text: "Knockout Gym was founded with just 400 sq ft of space and a handful of equipment. Gurpreet Singh invested his competition savings into building a gym he wished had existed when he started training. The early days were tough — word spread slowly, members were few — but every session was treated like a championship bout.",
+        text: "Fitness Gym was founded with just 400 sq ft of space and a handful of equipment. Gurpreet Singh invested his competition savings into building a gym he wished had existed when he started training. The early days were tough — word spread slowly, members were few — but every session was treated like a championship bout.",
         image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80',
       },
       {
         year: '2020',
         heading: 'Growing Through Challenges',
-        text: "The pandemic tested every gym in the country. Knockout Gym pivoted fast — launching online training sessions before most gyms knew what Zoom was. Members stayed loyal. When restrictions lifted, the gym reopened to a bigger community than it had before closing. The challenge had made us stronger.",
+        text: "The pandemic tested every gym in the country. Fitness Gym pivoted fast — launching online training sessions before most gyms knew what Zoom was. Members stayed loyal. When restrictions lifted, the gym reopened to a bigger community than it had before closing. The challenge had made us stronger.",
         image: 'https://images.unsplash.com/photo-1581009137042-c552e485697a?w=800&q=80',
       },
       {
@@ -92,7 +92,7 @@ const defaultContent = {
       {
         year: '2022',
         heading: 'Championship Season',
-        text: "The North India Fitness Open. Gurpreet took gold. The gym floor exploded. Knockout Gym's reputation as a serious training facility was cemented. Membership requests tripled. A waiting list formed for the first time. We expanded to a second hall and added professional cardio equipment.",
+        text: "The North India Fitness Open. Gurpreet took gold. The gym floor exploded. Fitness Gym's reputation as a serious training facility was cemented. Membership requests tripled. A waiting list formed for the first time. We expanded to a second hall and added professional cardio equipment.",
         image: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&q=80',
       },
       {
@@ -231,7 +231,7 @@ const defaultContent = {
   about: {
     heading:  'More Than a Gym.',
     subheading: 'A Place Where Discipline Becomes Identity.',
-    body:     'Knockout Gym has been Zirakpur\'s premier training facility since 2019. With world-class equipment, expert coaching, and a community that pushes you further — every session here counts.',
+    body:     'Fitness Gym has been Zirakpur\'s premier training facility since 2019. With world-class equipment, expert coaching, and a community that pushes you further — every session here counts.',
     image:    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
   },
 
