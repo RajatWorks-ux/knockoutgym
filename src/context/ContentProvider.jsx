@@ -24,6 +24,13 @@ export function ContentProvider({ children }) {
         }
         contentRef.current = resolved
         setLocalContent(resolved)
+        // Cache brand info for Loader.jsx (runs before ContentProvider)
+        try {
+          localStorage.setItem('kg_brand', JSON.stringify({
+            logo: resolved.branding?.logoPrefix || 'KO',
+            name: resolved.branding?.loaderSubtitle || resolved.gym?.name || 'Knockout Gym',
+          }))
+        } catch(e) {}
       } catch (err) {
         console.error('Content load error:', err)
         contentRef.current = defaultContent
@@ -127,5 +134,6 @@ function deepMerge(defaults, saved) {
   }
   return result
 }
+
 
 
