@@ -10,18 +10,18 @@ const defaultContent = {
 
   // ── GYM INFO ──────────────────────────────────────────────────────────────
   gym: {
-    name:        'Fitness Gym',
+    name:        'Fitneaa Gym',
     tagline:     'Where Champions Are Forged.',
-    address:     '---------',
+    address:     '-----------',
     phone:       '------',
-    email:       '----------',
+    email:       '--------',
     rating:      '4.9',
     reviews:     '364',
     totalMembers:'500',
     years:       '6',
     instagram:   '',
     facebook:    '',
-    whatsapp:    '-------',
+    whatsapp:    '------',
     // Paste a Google Maps embed URL here (from maps.google.com → Share → Embed)
     mapEmbed:    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3431.4!2d76.85!3d30.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDM4JzI0LjAiTiA3NsKwNTEnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890',
     hours: {
@@ -38,7 +38,7 @@ const defaultContent = {
     ctaText: 'Join Now',
     // Leave videoUrl blank = shows animated CSS background (still looks great)
     // To add video: paste direct MP4 link OR place file in public/videos/hero.mp4
-    // and type:  /knockout-gym/videos/hero.mp4
+    // and type:  /Fitness-gym/videos/hero.mp4
     videoUrl: '',
     // Fallback image URL if no video (paste any gym image URL)
     bgImage: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80',
@@ -56,7 +56,7 @@ const defaultContent = {
   owner: {
     name:   'Gurpreet Singh',
     title:  'Head Coach & Founder',
-    bio:    'Gurpreet Singh started Fitness Gym in 2019 with a single vision — to build a space where every person, regardless of fitness level, could unlock their true potential. A competitive athlete with over a decade of training experience, Gurpreet has represented Punjab at national-level competitions and brought home titles that reflect years of discipline and hard work. His coaching philosophy is simple: consistency over intensity, form over ego, and character over trophies.',
+    bio:    'Gurpreet Singh started Knockout Gym in 2019 with a single vision — to build a space where every person, regardless of fitness level, could unlock their true potential. A competitive athlete with over a decade of training experience, Gurpreet has represented Punjab at national-level competitions and brought home titles that reflect years of discipline and hard work. His coaching philosophy is simple: consistency over intensity, form over ego, and character over trophies.',
     image:  'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
     achievements: [
       { title: 'Punjab State Bodybuilding Championship', year: '2023' },
@@ -68,7 +68,7 @@ const defaultContent = {
 
   // ── GYM STORY TIMELINE ────────────────────────────────────────────────────
   story: {
-    heading: 'The Fitness Story',
+    heading: 'The Knockout Story',
     intro:   'Every great gym has a founding moment. Ours started with a small space, a big vision, and the belief that Zirakpur deserved a world-class fitness destination.',
     timeline: [
       {
@@ -86,7 +86,7 @@ const defaultContent = {
       {
         year: '2021',
         heading: 'First Competition Win',
-        text: "Gurpreet entered the Chandigarh Regional Classic and brought home a silver. But more importantly, three Knockout Gym members competed for the first time — and all three placed. The gym was no longer just a place to train. It was producing athletes.",
+        text: "Gurpreet entered the Chandigarh Regional Classic and brought home a silver. But more importantly, three Fitness Gym members competed for the first time — and all three placed. The gym was no longer just a place to train. It was producing athletes.",
         image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80',
       },
       {
@@ -223,8 +223,9 @@ const defaultContent = {
   // ── BRANDING & STYLE ──────────────────────────────────────────────────────
   //  Change these to rebrand this site for ANY gym
   branding: {
-    logoPrefix:   'KO',         // 2-4 letters shown in navbar & footer logo
+    logoPrefix:   'FO',         // 2-4 letters shown in navbar & footer logo
     primaryColor: '#c8102e',    // Brand color — buttons, accents, highlights
+    loaderSubtitle: '',             // Text under logo on loading screen (empty = uses gym name)
   },
 
   // ── ABOUT SECTION SNAPSHOT (on Home page) ─────────────────────────────────
@@ -238,4 +239,5 @@ const defaultContent = {
 }
 
 export default defaultContent
+
 
