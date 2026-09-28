@@ -20,7 +20,6 @@ export default function Home() {
 /* ── HERO ── */
 function HeroSection({ hero, gym }) {
   const hasMedia = hero?.videoUrl || hero?.bgImage
-
   return (
     <section className="hero">
       {hero?.videoUrl
@@ -93,7 +92,7 @@ function AboutSection({ about, owner }) {
       <div className={`container ${imgSrc ? 'about-grid' : 'about-no-img'}`}>
         {imgSrc && (
           <div className="about-img-wrap">
-            <img src={imgSrc} alt="Knockout Gym" className="about-img"
+            <img src={imgSrc} alt="About" className="about-img"
               onError={e => { e.target.style.display = 'none' }} />
             <div className="about-img-glow" />
           </div>
@@ -110,7 +109,7 @@ function AboutSection({ about, owner }) {
   )
 }
 
-/* ── RESULTS TEASER ── */
+/* ── RESULTS TEASER — side-by-side, no cropping ── */
 function ResultsTeaser({ results }) {
   const valid = (results || []).filter(r => r.before && r.after).slice(0, 3)
   if (!valid.length) return null
@@ -127,13 +126,18 @@ function ResultsTeaser({ results }) {
         <div className="rt-grid">
           {valid.map(r => (
             <div key={r.id} className="rt-card">
+              {/* Side-by-side full images — no cropping */}
               <div className="rt-images">
-                <img src={r.after}  alt="After"  className="rt-after"
-                  onError={e => e.target.style.display = 'none'} />
-                <img src={r.before} alt="Before" className="rt-before"
-                  onError={e => e.target.style.display = 'none'} />
-                <span className="rt-label-before">BEFORE</span>
-                <span className="rt-label-after">AFTER</span>
+                <div className="rt-side">
+                  <img src={r.before} alt="Before" className="rt-img"
+                    onError={e => e.target.style.display = 'none'} />
+                  <span className="rt-label">BEFORE</span>
+                </div>
+                <div className="rt-side">
+                  <img src={r.after} alt="After" className="rt-img"
+                    onError={e => e.target.style.display = 'none'} />
+                  <span className="rt-label">AFTER</span>
+                </div>
               </div>
               <div className="rt-info">
                 <div>
