@@ -21,20 +21,18 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-2);
+  color: var(--text-muted);
   border: 1px solid var(--border);
   border-radius: 100px;
   background: transparent;
+  font-family: var(--font-body);
+  cursor: pointer;
   transition: all 0.2s;
 }
-.filter-btn:hover { border-color: var(--border-b); color: var(--text); }
-.filter-btn.active {
-  background: var(--red);
-  border-color: var(--red);
-  color: #fff;
-}
+.filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.filter-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
 
-.no-results { font-size: 14px; color: var(--text-2); padding: 60px 0; }
+.no-results { font-size: 14px; color: var(--text-muted); padding: 60px 0; }
 
 /* Grid */
 .ba-grid {
@@ -43,7 +41,7 @@
   gap: 20px;
 }
 
-/* Before/After card */
+/* Card */
 .ba-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -51,8 +49,9 @@
   overflow: hidden;
   transition: border-color 0.3s;
 }
-.ba-card:hover { border-color: var(--border-b); }
+.ba-card:hover { border-color: var(--border-hover); }
 
+/* Info bar */
 .ba-info {
   display: flex;
   justify-content: space-between;
@@ -63,7 +62,7 @@
 }
 .ba-info-left { display: flex; flex-direction: column; gap: 3px; }
 .ba-name     { font-size: 14px; font-weight: 600; color: var(--text); }
-.ba-duration { font-size: 11px; color: var(--text-2); }
+.ba-duration { font-size: 11px; color: var(--text-muted); }
 .ba-result   {
   font-family: var(--font-display);
   font-size: 28px;
@@ -72,35 +71,56 @@
   white-space: nowrap;
 }
 
-/* Slider */
+/* ─── SLIDER — FULL IMAGE, NO CROPPING ────────────────────────── */
 .ba-slider {
   position: relative;
-  aspect-ratio: 4/3;
-  overflow: hidden;
+  background: #000;           /* letterbox bg if images differ in ratio */
   cursor: ew-resize;
   touch-action: none;
   user-select: none;
+  overflow: hidden;
 }
 
-.ba-after  { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.ba-before-wrap { position: absolute; inset: 0; }
-.ba-before { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* After image is the reference — sets natural height of the card */
+.ba-after {
+  display: block;
+  width: 100%;
+  height: auto;               /* FULL IMAGE — no crop */
+  object-fit: contain;
+}
 
+/* Before image overlays on top, clipped by clip-path set in JS */
+.ba-before-wrap {
+  position: absolute;
+  inset: 0;                   /* covers the full slider height */
+  pointer-events: none;
+}
+.ba-before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;        /* FULL IMAGE — no crop */
+  object-position: center;
+}
+
+/* Labels */
 .ba-label {
   position: absolute;
-  bottom: 14px;
+  bottom: 12px;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.2em;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.65);
   backdrop-filter: blur(4px);
   color: #fff;
   padding: 4px 9px;
   border-radius: 4px;
+  pointer-events: none;
 }
-.ba-label-left  { left: 14px; }
-.ba-label-right { right: 14px; }
+.ba-label-left  { left: 12px; }
+.ba-label-right { right: 12px; }
 
+/* Drag handle */
 .ba-handle {
   position: absolute;
   top: 0; bottom: 0;
@@ -111,19 +131,23 @@
   pointer-events: none;
   z-index: 3;
 }
-.ba-handle-line { flex: 1; width: 2px; background: rgba(255,255,255,0.7); }
+.ba-handle-line {
+  flex: 1;
+  width: 2px;
+  background: rgba(255,255,255,0.75);
+}
 .ba-handle-circle {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   background: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.5);
 }
 
 @media (max-width: 600px) {
