@@ -6,9 +6,8 @@
   line-height: 1;
   margin: 12px 0 8px;
 }
-.res-sub { font-size: 14px; color: var(--text-2); margin-top: 8px; }
+.res-sub { font-size: 14px; color: var(--text-muted); margin-top: 8px; }
 
-/* Filter bar */
 .filter-bar {
   display: flex;
   gap: 8px;
@@ -34,24 +33,22 @@
 
 .no-results { font-size: 14px; color: var(--text-muted); padding: 60px 0; }
 
-/* Grid */
 .ba-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 20px;
 }
 
-/* Card */
+/* ─── BA CARD ──────────────────────────────────────────────────── */
 .ba-card {
-  background: var(--bg-card);
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--r-lg);
+  border-radius: 10px;
   overflow: hidden;
   transition: border-color 0.3s;
 }
 .ba-card:hover { border-color: var(--border-hover); }
 
-/* Info bar */
 .ba-info {
   display: flex;
   justify-content: space-between;
@@ -71,42 +68,46 @@
   white-space: nowrap;
 }
 
-/* ─── SLIDER — FULL IMAGE, NO CROPPING ────────────────────────── */
+/* ─── SLIDER — BOTH IMAGES ABSOLUTELY POSITIONED, SAME BOX ──── */
+/*     Using aspect-ratio so card height is consistent            */
+/*     object-fit: contain  →  FULL IMAGE, black bars instead of crop */
 .ba-slider {
   position: relative;
-  background: #000;           /* letterbox bg if images differ in ratio */
+  aspect-ratio: 3 / 4;  /* portrait — matches typical full-body gym photos */
+  overflow: hidden;
+  background: #000;
   cursor: ew-resize;
   touch-action: none;
   user-select: none;
-  overflow: hidden;
 }
 
-/* After image is the reference — sets natural height of the card */
 .ba-after {
-  display: block;
-  width: 100%;
-  height: auto;               /* FULL IMAGE — no crop */
-  object-fit: contain;
-}
-
-/* Before image overlays on top, clipped by clip-path set in JS */
-.ba-before-wrap {
   position: absolute;
-  inset: 0;                   /* covers the full slider height */
-  pointer-events: none;
-}
-.ba-before {
-  display: block;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;        /* FULL IMAGE — no crop */
-  object-position: center;
+  object-fit: contain;   /* FULL IMAGE — no cropping */
+  display: block;
 }
 
-/* Labels */
+.ba-before-wrap {
+  position: absolute;
+  inset: 0;
+  /* clip-path set inline by React */
+}
+
+.ba-before {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* FULL IMAGE — no cropping */
+  display: block;
+}
+
 .ba-label {
   position: absolute;
-  bottom: 12px;
+  bottom: 14px;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -116,11 +117,11 @@
   padding: 4px 9px;
   border-radius: 4px;
   pointer-events: none;
+  z-index: 2;
 }
-.ba-label-left  { left: 12px; }
-.ba-label-right { right: 12px; }
+.ba-label-left  { left: 14px; }
+.ba-label-right { right: 14px; }
 
-/* Drag handle */
 .ba-handle {
   position: absolute;
   top: 0; bottom: 0;
@@ -134,7 +135,7 @@
 .ba-handle-line {
   flex: 1;
   width: 2px;
-  background: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.8);
 }
 .ba-handle-circle {
   position: absolute;
