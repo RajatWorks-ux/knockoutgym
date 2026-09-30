@@ -57,6 +57,41 @@ function BrandingApplier() {
   return null
 }
 
+
+// Updates document <title> and <meta description> from owner panel settings
+function SEOUpdater() {
+  const { content } = useContent()
+  useEffect(() => {
+    const s = content?.seo
+    if (!s) return
+    // Browser tab title
+    const parts = [s.siteTitle, s.tagline].filter(Boolean)
+    if (parts.length) document.title = parts.join(' — ')
+    // Meta description (for Google)
+    if (s.description) {
+      let el = document.querySelector('meta[name="description"]')
+      if (!el) {
+        el = document.createElement('meta')
+        el.name = 'description'
+        document.head.appendChild(el)
+      }
+      el.content = s.description
+    }
+    // Open Graph (WhatsApp / Facebook preview)
+    if (s.siteTitle) {
+      let og = document.querySelector('meta[property="og:title"]')
+      if (!og) { og = document.createElement('meta'); og.setAttribute('property','og:title'); document.head.appendChild(og) }
+      og.content = s.siteTitle
+    }
+    if (s.description) {
+      let ogd = document.querySelector('meta[property="og:description"]')
+      if (!ogd) { ogd = document.createElement('meta'); ogd.setAttribute('property','og:description'); document.head.appendChild(ogd) }
+      ogd.content = s.description
+    }
+  }, [content?.seo])
+  return null
+}
+
 function PublicLayout({ children }) {
   return (
     <>
@@ -75,6 +110,7 @@ export default function App() {
         <BrowserRouter>
           <ContentProvider>
             <BrandingApplier />
+            <SEOUpdater />
             <Cursor />
             <Routes>
               <Route path="/"            element={<PublicLayout><Home /></PublicLayout>} />
@@ -91,4 +127,4 @@ export default function App() {
     </ErrorBoundary>
   )
 }
- 
+
